@@ -11,6 +11,7 @@
 #include "Key.h"
 #include "MyRTC.h"
 #include "menu.h"
+#include "menu_SetTime.h"
 
 void bsp_Init(void);
 

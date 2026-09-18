@@ -9,18 +9,17 @@ int main(void)
     bsp_Init();
     menu_ShowClock();   
     OLED_Update();
-    LED1_ON();
-    LED2_ON();
 
 	while (1)
 	{
         /*首页*/
-        firstPage_KeyFlag = menu_FirstPage();
+        firstPage_KeyFlag = menu_FirstPage_Choose();
 
-        /*第一页*/
+        /*第一页：菜单 | 设置*/
         if(firstPage_KeyFlag == 1){}
-        else if(firstPage_KeyFlag == 2){}
-
+        else if(firstPage_KeyFlag == 2){
+            menu_SecondPage_Setting_Choose();
+        }
 	}
 }
 

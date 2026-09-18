@@ -9,7 +9,7 @@
 #define KEY1_GPIOx                  GPIOB
 #define KEY2_GPIOx                  GPIOA
 #define KEY3_GPIOx                  GPIOA
-#define KEY1_GPIO_Pin_x             GPIO_Pin_1
+#define KEY1_GPIO_Pin_x             GPIO_Pin_0
 #define KEY2_GPIO_Pin_x             GPIO_Pin_6
 #define KEY3_GPIO_Pin_x             GPIO_Pin_4
 

@@ -89,6 +89,8 @@ virtualFolder:
         - path: Hardware/Key.h
         - path: Hardware/LED.c
         - path: Hardware/LED.h
+        - path: Hardware/menu_SetTime.c
+        - path: Hardware/menu_SetTime.h
       folders: []
     - name: User
       files:
