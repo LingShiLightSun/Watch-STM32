@@ -16,10 +16,8 @@ int main(void)
         firstPage_KeyFlag = menu_FirstPage_Choose();
 
         /*第一页：菜单 | 设置*/
-        if(firstPage_KeyFlag == 1){}
-        else if(firstPage_KeyFlag == 2){
-            menu_SecondPage_Setting_Choose();
-        }
+        if(firstPage_KeyFlag == 1){menu_SecondPage_Menu_Choose();}
+        else if(firstPage_KeyFlag == 2){menu_SecondPage_Setting_Choose();}
 	}
 }
 
