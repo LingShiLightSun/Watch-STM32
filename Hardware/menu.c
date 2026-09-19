@@ -207,8 +207,8 @@ void Set_Selection(uint8_t move_flag, uint8_t Pre_selection, uint8_t Target_sele
     {
         pre_selection = Pre_selection;         //改变选中值
         target_selection = Target_selection;    //改变目标值
-        Menu_Animation();                       //切换动画
     }
+    Menu_Animation();                       //切换动画
 }
 /*********************
     作用：菜单选择
@@ -220,7 +220,6 @@ uint8_t menu_SecondPage_Menu_Choose(void)
 {
     uint8_t KeyFlag;
     uint8_t DirectFlag;//1：上一项；2：下一项
-    uint8_t RepeatFlag;//1： 可以滑动；2：防止滑动；防止出现到顶重复滑动的标志位，主要用于优化
     while (1)
     {
         KeyFlag = 0;
@@ -255,7 +254,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
         }  
 
         if(KeyFlag == 1){return 0;}
-        else if(KeyFlag == 2){}
+        else if(KeyFlag == 2){menu_ThirdPage_Stopwatch();}
         else if(KeyFlag == 3){}
         else if(KeyFlag == 4){}
         else if(KeyFlag == 5){}
@@ -277,7 +276,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
             if(DirectFlag == 1){
                Set_Selection(move_flag, 1, 0);
             }
-            else if(DirectFlag == 2){Set_Selection(move_flag, 0, 0); RepeatFlag = 0;}//没有意义，从0移动到0
+            else if(DirectFlag == 2){Set_Selection(move_flag, 0, 0);}//没有意义，从0移动到0
             break;
         case 2:
             if(DirectFlag == 1){Set_Selection(move_flag, 2, 1);}
@@ -306,6 +305,114 @@ uint8_t menu_SecondPage_Menu_Choose(void)
             }
             break;     
         
+        }
+    } 
+}
+
+uint8_t hour;
+uint8_t min;
+uint8_t sec;
+uint8_t StopWatch_Start_Timing;//秒表计时标志位: 1->开始计时 | 0->停止计时
+/*********************
+    作用：秒表计时（放在定时器中断里）
+    参数：无
+    返回：无
+***********************/
+void Stopwatch_Tick(void)
+{
+    static uint32_t count = 0;
+    
+    if(StopWatch_Start_Timing)//开始标志位为1时，开始计时
+    {
+        count++;        
+        if(count >= 1000)
+        {
+            count = 0;
+            sec++;
+            if(sec >= 60){sec = 0;min++;}
+            if(min >= 60){min = 0;hour++;}
+            if(hour >=99){hour = 0;}
+        }
+    }
+}
+/*********************
+    作用：秒表界面（首页->菜单->秒表）
+    参数：无
+    返回：无
+***********************/
+void menu_ShowStopwatch(void)
+{
+    OLED_ShowImage(0,0,16,16,Return);
+    OLED_Printf(32,24,OLED_8X16,"%02d:%02d:%02d",hour,min,sec);
+    OLED_ShowString(8,48,"开始",OLED_8X16);
+    OLED_ShowString(48,48,"停止",OLED_8X16);
+    OLED_ShowString(88,48,"清除",OLED_8X16);
+}
+
+int8_t menu_ThirdPage_KeyFlag;
+/*********************
+    作用：秒表界面选择
+    参数：无
+    返回：按键选择标志
+***********************/
+uint8_t menu_ThirdPage_Stopwatch(void)
+{
+    uint8_t KeyFlag;
+    while (1)
+    {
+        KeyFlag = 0;
+        menu_KeyNum = Key_GetNum();
+
+        /*按钮逻辑*//*按钮范围: 1~4*/
+        if(menu_KeyNum == 1)//后退
+        {
+            menu_ThirdPage_KeyFlag--;
+            if(menu_ThirdPage_KeyFlag <= 0){menu_ThirdPage_KeyFlag = 1;}
+        }   
+        else if(menu_KeyNum == 2)//前进
+        {
+            menu_ThirdPage_KeyFlag++;
+            if(menu_ThirdPage_KeyFlag >= 5){menu_ThirdPage_KeyFlag = 4;}
+        }   
+        else if(menu_KeyNum == 3)//确定
+        {
+            OLED_Clear();
+            OLED_Update();
+            KeyFlag = menu_ThirdPage_KeyFlag;
+        }  
+
+        if(KeyFlag == 1){return 0;}//返回
+        if(KeyFlag == 2){StopWatch_Start_Timing = 1;}//开始
+        if(KeyFlag == 3){StopWatch_Start_Timing = 0;}//停止
+        if(KeyFlag == 4){StopWatch_Start_Timing = 0;hour = 0;min = 0;sec = 0;}//清除
+
+        switch (menu_ThirdPage_KeyFlag)
+        {
+        case 0://未选中状态
+            menu_ShowStopwatch();
+            OLED_Update();
+            break;
+        case 1://选中“返回”
+            menu_ShowStopwatch();
+            OLED_ReverseArea(0,0,16,16);
+            OLED_Update();
+            break;
+        case 2://选中“开始”
+            menu_ShowStopwatch();
+            OLED_ReverseArea(8,48,32,16);
+            OLED_Update();
+            break;    
+        case 3://选中“停止”
+            menu_ShowStopwatch();
+            OLED_ReverseArea(48,48,32,16);
+            OLED_Update();
+            break;    
+        case 4://选中“清除”
+            menu_ShowStopwatch();
+            OLED_ReverseArea(88,48,32,16);
+            OLED_Update();
+            break;    
+
         }
     } 
 }
