@@ -233,7 +233,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
                 DirectFlag = 1;
                 move_flag  = 1;
                 menu_SecondPage_KeyFlag2--;
-                LED1_Turn();
+                // LED1_Turn();
             }
         }   
         else if(menu_KeyNum == 2)//前进
@@ -243,7 +243,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
                 DirectFlag = 2;
                 move_flag  = 1;
                 menu_SecondPage_KeyFlag2++;
-                LED2_Turn();
+                // LED2_Turn();
             }
         }   
         else if(menu_KeyNum == 3)//确定
@@ -255,7 +255,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
 
         if(KeyFlag == 1){return 0;}
         else if(KeyFlag == 2){menu_ThirdPage_Stopwatch();}
-        else if(KeyFlag == 3){}
+        else if(KeyFlag == 3){menu_ThirdPage_Flashlight();}
         else if(KeyFlag == 4){}
         else if(KeyFlag == 5){}
         else if(KeyFlag == 6){}
@@ -413,6 +413,80 @@ uint8_t menu_ThirdPage_Stopwatch(void)
             OLED_Update();
             break;    
 
+        }
+    } 
+}
+
+/*********************
+    作用：手电筒界面（首页->菜单->手电筒）
+    参数：无
+    返回：无
+***********************/
+void menu_ShowFlashlight(void)
+{
+    OLED_ShowImage(0,0,16,16,Return);
+    OLED_ShowString(28,24,"开始",OLED_8X16);
+    OLED_ShowString(68,24,"关闭",OLED_8X16);
+}
+
+int8_t menu_ThirdPage_KeyFlag2;
+/*********************
+    作用：秒表界面选择
+    参数：无
+    返回：按键选择标志
+***********************/
+uint8_t menu_ThirdPage_Flashlight(void)
+{
+    uint8_t KeyFlag;
+    while (1)
+    {
+        KeyFlag = 0;
+
+        menu_KeyNum = Key_GetNum();
+
+        /*按钮逻辑*//*按钮范围: 1~4*/
+        if(menu_KeyNum == 1)//后退
+        {
+            menu_ThirdPage_KeyFlag2--;
+            if(menu_ThirdPage_KeyFlag2 <= 0){menu_ThirdPage_KeyFlag2 = 1;}
+        }   
+        else if(menu_KeyNum == 2)//前进
+        {
+            menu_ThirdPage_KeyFlag2++;
+            if(menu_ThirdPage_KeyFlag2 >= 4){menu_ThirdPage_KeyFlag2 = 3;}
+        }   
+        else if(menu_KeyNum == 3)//确定
+        {
+            OLED_Clear();
+            OLED_Update();
+            KeyFlag = menu_ThirdPage_KeyFlag2;
+        }  
+
+        if(KeyFlag == 1){return 0;}//返回
+        if(KeyFlag == 2){Flashlight_ON();}//开始
+        if(KeyFlag == 3){Flashlight_OFF();}//关闭
+
+        switch (menu_ThirdPage_KeyFlag2)
+        {
+        case 0://未选中状态
+            menu_ShowFlashlight();
+            OLED_Update();
+            break;
+        case 1://选中“返回”
+            menu_ShowFlashlight();
+            OLED_ReverseArea(0,0,16,16);
+            OLED_Update();
+            break;
+        case 2://选中“开始”
+            menu_ShowFlashlight();
+            OLED_ReverseArea(28,24,32,16);
+            OLED_Update();
+            break;    
+        case 3://选中“停止”
+            menu_ShowFlashlight();
+            OLED_ReverseArea(68,24,32,16);
+            OLED_Update();
+            break;    
         }
     } 
 }

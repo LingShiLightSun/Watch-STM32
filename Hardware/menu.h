@@ -17,5 +17,6 @@ uint8_t menu_SecondPage_Menu_Choose(void);
 void Stopwatch_Tick(void);
 void menu_ShowStopwatch(void);
 uint8_t menu_ThirdPage_Stopwatch(void);
-
+void menu_ShowFlashlight(void);
+uint8_t menu_ThirdPage_Flashlight(void);
 #endif
