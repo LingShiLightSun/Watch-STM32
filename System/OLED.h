@@ -56,6 +56,9 @@ void OLED_DrawArc(int16_t X, int16_t Y, uint8_t Radius, int16_t StartAngle, int1
 
 /*********************函数声明*/
 
+
+extern uint8_t OLED_DisplayBuf[8][128];
+
 #endif
 
 

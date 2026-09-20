@@ -96,6 +96,8 @@ virtualFolder:
         - path: Hardware/MPU6050_Reg.h
         - path: Hardware/MyI2C.c
         - path: Hardware/MyI2C.h
+        - path: Hardware/dino.c
+        - path: Hardware/dino.h
       folders: []
     - name: User
       files:

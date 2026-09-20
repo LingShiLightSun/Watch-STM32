@@ -258,7 +258,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
         else if(KeyFlag == 3){menu_ThirdPage_Flashlight();}
         else if(KeyFlag == 4){}
         else if(KeyFlag == 5){}
-        else if(KeyFlag == 6){}
+        else if(KeyFlag == 6){menu_ThirdPage_Game();}
         else if(KeyFlag == 7){menu_ThirdPage_MPU6050();}
 
         if(DirectFlag == 0)//用于进来时最开始的显示
@@ -518,6 +518,11 @@ void MPU6050_Calculation(void)
     Yaw = a * yaw_g;
 }
 
+/*********************
+    作用：MPU6050界面（首页->菜单->MPU6050）
+    参数：无
+    返回：无
+***********************/
 void Show_MPU6050_UI(void)
 {
     OLED_ShowImage(0,0,16,16,Return);
@@ -526,6 +531,11 @@ void Show_MPU6050_UI(void)
     OLED_Printf(0,48,OLED_8X16,"偏航角:%.2f", Yaw);
 }
 
+/*********************
+    作用：MPU6050界面选择
+    参数：无
+    返回：按键选择标志
+***********************/
 int menu_ThirdPage_MPU6050()
 {
     while (1)
@@ -547,5 +557,41 @@ int menu_ThirdPage_MPU6050()
         OLED_Update();
         
     }
-    
+}
+
+/*********************
+    作用：游戏界面选择
+    参数：无
+    返回：按键选择标志
+***********************/
+uint8_t menu_ThirdPage_KeyFlag3;
+extern uint8_t Dino_jump_flag;
+uint8_t menu_ThirdPage_Game(void)
+{
+    dino_FlagInit();//每次进来前先初始化
+
+    while (1)
+    {
+        /*按钮逻辑*//*按钮范围: 1 && 3, 1->跳跃； 3-> 退出*/
+        menu_KeyNum = Key_GetNum();
+        if(menu_KeyNum == 1)
+        {
+            Dino_jump_flag = 1;
+        }
+        if(menu_KeyNum == 3)//退出
+        {
+            OLED_Clear();
+            OLED_Update();
+            return 0;
+        }   
+        menu_ThirdPage_KeyFlag3 = dino_Animation();
+
+        //触碰到物品也会直接退出
+        if(menu_ThirdPage_KeyFlag3 == 0)
+        {
+            OLED_Clear();
+            OLED_Update();
+            return 0;
+        }
+    }
 }

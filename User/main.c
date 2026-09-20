@@ -18,6 +18,7 @@ int main(void)
         /*第一页：菜单 | 设置*/
         if(firstPage_KeyFlag == 1){menu_SecondPage_Menu_Choose();}
         else if(firstPage_KeyFlag == 2){menu_SecondPage_Setting_Choose();}
+
 	}
 }
 
@@ -28,6 +29,7 @@ void TIM2_IRQHandler(void)
 	{
 		Key_Tick();
         Stopwatch_Tick();
+        dino_Tick();
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 	}
 }

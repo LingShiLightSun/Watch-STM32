@@ -23,5 +23,5 @@ uint8_t menu_ThirdPage_Flashlight(void);
 void MPU6050_Calculation(void);
 void Show_MPU6050_UI(void);
 int menu_ThirdPage_MPU6050(void);
-
+uint8_t menu_ThirdPage_Game(void);
 #endif

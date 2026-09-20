@@ -14,6 +14,8 @@
 #include "menu_SetTime.h"
 #include "MPU6050.h"
 #include "math.h"
+#include "dino.h"
+#include "stdlib.h"
 
 void bsp_Init(void);
 
