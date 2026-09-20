@@ -91,6 +91,11 @@ virtualFolder:
         - path: Hardware/LED.h
         - path: Hardware/menu_SetTime.c
         - path: Hardware/menu_SetTime.h
+        - path: Hardware/MPU6050.c
+        - path: Hardware/MPU6050.h
+        - path: Hardware/MPU6050_Reg.h
+        - path: Hardware/MyI2C.c
+        - path: Hardware/MyI2C.h
       folders: []
     - name: User
       files:

@@ -7,4 +7,5 @@ void bsp_Init(void)
     Key_Init();
     LED_Init();
     Timer_Init();
+    MPU6050_Init();
 }

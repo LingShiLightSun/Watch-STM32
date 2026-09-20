@@ -259,7 +259,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
         else if(KeyFlag == 4){}
         else if(KeyFlag == 5){}
         else if(KeyFlag == 6){}
-        else if(KeyFlag == 7){}
+        else if(KeyFlag == 7){menu_ThirdPage_MPU6050();}
 
         if(DirectFlag == 0)//用于进来时最开始的显示
         {
@@ -489,4 +489,63 @@ uint8_t menu_ThirdPage_Flashlight(void)
             break;    
         }
     } 
+}
+
+int16_t ax,ay,az,gx,gy,gz;//MPU6050测得的三轴加速度和角速度
+float roll_g, pitch_g, yaw_g;//陀螺仪计算得到的欧拉角
+float roll_a, pitch_a;//加速度计计算得到的欧拉角(没有yaw角)
+float Roll, Pitch, Yaw;//互补滤波后的欧拉角
+float a = 0.9;//互补滤波器系数
+float Delta_t = 0.005;//采样周期
+
+void MPU6050_Calculation(void)
+{
+    Delay_ms(5);//？？？还是有点不太理解
+    MPU6050_GetData(&ax, &ay, &az, &gx, &gy, &gz);
+
+    /*陀螺仪计算*/
+    roll_g = Roll + (float)gx * Delta_t;
+    pitch_g = Pitch + (float)gy * Delta_t;
+    yaw_g = Yaw + (float)gz * Delta_t;
+
+    /*加速度计计算*/
+    pitch_a = atan2((-1) * ax, az) * 180 / PI;
+    roll_a = atan2(ay, az) * 180 / PI;
+
+    /*互补滤波*/
+    Roll = a * roll_g + (1-a) * roll_a;
+    Pitch = a * pitch_g + (1-a) * pitch_a;
+    Yaw = a * yaw_g;
+}
+
+void Show_MPU6050_UI(void)
+{
+    OLED_ShowImage(0,0,16,16,Return);
+    OLED_Printf(0,16,OLED_8X16,"横滚角:%.2f", Roll);
+    OLED_Printf(0,32,OLED_8X16,"俯仰角:%.2f", Pitch);
+    OLED_Printf(0,48,OLED_8X16,"偏航角:%.2f", Yaw);
+}
+
+int menu_ThirdPage_MPU6050()
+{
+    while (1)
+    {
+        menu_KeyNum = Key_GetNum();
+
+        /*按钮逻辑*//*按钮范围: 无范围；直接退出*/
+        if(menu_KeyNum == 3)//退出
+        {
+            OLED_Clear();
+            OLED_Update();
+            return 0;
+        }   
+
+        OLED_Clear();
+        MPU6050_Calculation();
+        Show_MPU6050_UI();
+        OLED_ReverseArea(0,0,16,16);
+        OLED_Update();
+        
+    }
+    
 }

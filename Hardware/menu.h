@@ -6,6 +6,7 @@
 extern uint8_t menu_KeyNum;
 
 #define MENU_CHOOSE_NUM 7
+#define PI              3.1415926
 
 void menu_ShowClock(void);
 uint8_t menu_FirstPage_Choose(void);
@@ -19,4 +20,8 @@ void menu_ShowStopwatch(void);
 uint8_t menu_ThirdPage_Stopwatch(void);
 void menu_ShowFlashlight(void);
 uint8_t menu_ThirdPage_Flashlight(void);
+void MPU6050_Calculation(void);
+void Show_MPU6050_UI(void);
+int menu_ThirdPage_MPU6050(void);
+
 #endif

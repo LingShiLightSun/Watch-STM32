@@ -12,6 +12,8 @@
 #include "MyRTC.h"
 #include "menu.h"
 #include "menu_SetTime.h"
+#include "MPU6050.h"
+#include "math.h"
 
 void bsp_Init(void);
 
