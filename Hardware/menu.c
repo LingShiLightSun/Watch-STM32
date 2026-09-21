@@ -257,7 +257,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
         else if(KeyFlag == 2){menu_ThirdPage_Stopwatch();}
         else if(KeyFlag == 3){menu_ThirdPage_Flashlight();}
         else if(KeyFlag == 4){}
-        else if(KeyFlag == 5){}
+        else if(KeyFlag == 5){menu_ThirdPage_Emoji();}
         else if(KeyFlag == 6){menu_ThirdPage_Game();}
         else if(KeyFlag == 7){menu_ThirdPage_MPU6050();}
 
@@ -536,7 +536,7 @@ void Show_MPU6050_UI(void)
     参数：无
     返回：按键选择标志
 ***********************/
-int menu_ThirdPage_MPU6050()
+uint8_t menu_ThirdPage_MPU6050()
 {
     while (1)
     {
@@ -595,3 +595,56 @@ uint8_t menu_ThirdPage_Game(void)
         }
     }
 }
+
+/*********************
+    作用：表情包界面（首页->菜单->小电视）
+    参数：无
+    返回：无
+***********************/
+void Show_Emoji_UI(void)
+{
+    //闭眼
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        Delay_ms(200);
+        OLED_Clear();
+        OLED_DrawEllipse(42,22,8,8-i,OLED_FILLED);
+        OLED_DrawEllipse(86,22,8,8-i,OLED_FILLED);
+        OLED_Update();  
+    }
+
+    //睁眼
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        Delay_ms(10);
+        OLED_Clear();
+        OLED_DrawEllipse(42,22,8,3+i,OLED_FILLED);
+        OLED_DrawEllipse(86,22,8,3+i,OLED_FILLED);
+        OLED_Update();  
+    }
+    
+    Delay_ms(500);
+}
+
+/*********************
+    作用：动态表情包界面选择
+    参数：无
+    返回：按键选择标志
+***********************/
+uint8_t menu_ThirdPage_Emoji(void)
+{
+    while (1)
+    {
+        menu_KeyNum = Key_GetNum();
+
+        /*按钮逻辑*//*按钮范围: 无范围；直接退出*/
+        if(menu_KeyNum == 3)//退出
+        {
+            OLED_Clear();
+            OLED_Update();
+            return 0;
+        }   
+        Show_Emoji_UI();  
+    }
+}
+
