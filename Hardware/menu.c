@@ -256,7 +256,7 @@ uint8_t menu_SecondPage_Menu_Choose(void)
         if(KeyFlag == 1){return 0;}
         else if(KeyFlag == 2){menu_ThirdPage_Stopwatch();}
         else if(KeyFlag == 3){menu_ThirdPage_Flashlight();}
-        else if(KeyFlag == 4){}
+        else if(KeyFlag == 4){menu_Level_Emoji();}
         else if(KeyFlag == 5){menu_ThirdPage_Emoji();}
         else if(KeyFlag == 6){menu_ThirdPage_Game();}
         else if(KeyFlag == 7){menu_ThirdPage_MPU6050();}
@@ -648,3 +648,39 @@ uint8_t menu_ThirdPage_Emoji(void)
     }
 }
 
+/*********************
+    作用：水平仪界面（首页->菜单->小电视）
+    参数：无
+    返回：无
+***********************/
+void Show_Level_UI(void)
+{
+    MPU6050_Calculation();
+    OLED_DrawCircle(64,32,30,OLED_UNFILLED);//大圆
+    OLED_DrawCircle(64 - Roll,32 + Pitch,20,OLED_FILLED);//小圆
+}
+
+/*********************
+    作用：水平仪界面选择
+    参数：无
+    返回：按键选择标志
+***********************/
+uint8_t menu_Level_Emoji(void)
+{
+    while (1)
+    {
+        menu_KeyNum = Key_GetNum();
+
+        /*按钮逻辑*//*按钮范围: 无范围；直接退出*/
+        if(menu_KeyNum == 3)//退出
+        {
+            OLED_Clear();
+            OLED_Update();
+            return 0;
+        }   
+
+        OLED_Clear();
+        Show_Level_UI();  
+        OLED_Update();
+    }
+}

@@ -26,4 +26,6 @@ uint8_t menu_ThirdPage_MPU6050(void);
 uint8_t menu_ThirdPage_Game(void);
 void Show_Emoji_UI(void);
 uint8_t menu_ThirdPage_Emoji(void);
+void Show_Level_UI(void);
+uint8_t menu_Level_Emoji(void);
 #endif
