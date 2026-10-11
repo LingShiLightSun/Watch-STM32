@@ -16,6 +16,8 @@
 #include "math.h"
 #include "dino.h"
 #include "stdlib.h"
+#include "AD.h"
+#include "Battery.h"
 
 void bsp_Init(void);
 

@@ -39,6 +39,7 @@ extern const uint8_t Ground[];
 extern const uint8_t Barriers[][48];
 extern const uint8_t Cloud[];
 extern const uint8_t Dino[][48];
+extern const uint8_t Battery[];
 /*按照上面的格式，在这个位置加入新的图像数据声明*/
 //...
 

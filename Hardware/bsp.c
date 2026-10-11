@@ -8,4 +8,6 @@ void bsp_Init(void)
     LED_Init();
     Timer_Init();
     MPU6050_Init();
+    AD_Init();
+    Battery_Init();
 }

@@ -11,7 +11,7 @@
 #define LED2_GPIOx                          GPIOA
 #define FLASHLIGHT_GPIOx                    GPIOB
 #define LED1_GPIO_Pin_x                     GPIO_Pin_0
-#define LED2_GPIO_Pin_x                     GPIO_Pin_2
+#define LED2_GPIO_Pin_x                     GPIO_Pin_1
 #define FLASHLIGHT_GPIO_Pin_x               GPIO_Pin_1
 
 

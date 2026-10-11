@@ -1,6 +1,50 @@
 #include "menu.h"
 
 
+uint16_t ADValue;   //电池电压（模拟值)
+float VBAT;         //电池电压（真实值)
+int16_t Battery_Capacity;
+
+void Show_Battery(void)
+{
+    uint32_t sum = 0;
+    
+    //均值滤波处理
+    for (uint16_t i = 0; i < 3000; i++)
+    {
+        ADValue = AD_GetValue();
+        sum += ADValue;
+    }
+    ADValue = sum /3000;
+    if (ADValue > 4085){ADValue = 4095;}//硬件存在问题，数字电压达不到4095
+
+    Battery_Capacity = (ADValue - 3276) * 100 /819;
+    if(Battery_Capacity < 0) {Battery_Capacity = 0;}
+    
+
+    VBAT = (float)ADValue / 4095 * 3.3;
+
+    // OLED_ShowNum(64, 0, ADValue, 4, OLED_6X8);
+    // OLED_Printf(64, 8, OLED_6X8, "VBAT:%.2f", VBAT);
+    OLED_ShowNum(85,4,Battery_Capacity,3,OLED_6X8);
+    OLED_ShowChar(103,4,'%',OLED_6X8);
+
+    //电池电量显示
+    if(Battery_Capacity == 100){OLED_ShowImage(110,0,16,16,Battery);}
+    else if(Battery_Capacity >= 10 && Battery_Capacity < 100)
+    {
+        OLED_ShowImage(110,0,16,16,Battery);
+        OLED_ClearArea(112 + Battery_Capacity / 10, 5, 10 - Battery_Capacity / 10, 6);
+        OLED_ClearArea(85,4,6,8);//清除0
+    }
+    else
+    {
+        OLED_ShowImage(110, 0, 16, 16, Battery);
+        OLED_ClearArea(112, 5,10,6);
+        OLED_ClearArea(85,4,12,8);//清除0
+    }
+}
+
 /*********************
     作用：UI首页显示
     参数：无
@@ -10,6 +54,7 @@ uint8_t menu_KeyNum;
 
 void menu_ShowClock(void)
 {
+    Show_Battery();
     MyRTC_ReadTime();
     
     OLED_Printf(0,0, OLED_6X8, "%4d-%02d-%02d", MyRTC_Time[0], MyRTC_Time[1], MyRTC_Time[2]);
@@ -50,6 +95,11 @@ uint8_t menu_FirstPage_Choose(void)
             OLED_Update();
             return menu_FirstPage_KeyFlag;
         }  
+        else if (menu_KeyNum == 4)//关机
+        {
+            GPIO_SetBits(GPIOB, GPIO_Pin_12);
+            GPIO_ResetBits(GPIOB, GPIO_Pin_13);
+        }
 
         switch (menu_FirstPage_KeyFlag)
         {

@@ -48,6 +48,19 @@ uint8_t Key_GetNum(void)
 	return Key_Temp;
 }
 
+uint16_t press_time;
+void Key3_Tick(void)
+{
+    if(GPIO_ReadInputDataBit(KEY3_GPIOx, KEY3_GPIO_Pin_x) == 0)
+    {
+        press_time++;
+    }
+    if(GPIO_ReadInputDataBit(KEY3_GPIOx, KEY3_GPIO_Pin_x) == 1)
+    {
+        press_time = 0;
+    }
+}
+
 uint8_t Key_GetState(void)
 {
     if (GPIO_ReadInputDataBit(KEY1_GPIOx, KEY1_GPIO_Pin_x) == 0)			//读PB1输入寄存器的状态，如果为0，则代表按键1按下
@@ -55,12 +68,15 @@ uint8_t Key_GetState(void)
 		return 1;												//置键码为1
 	}
 	
-	if (GPIO_ReadInputDataBit(KEY2_GPIOx, KEY2_GPIO_Pin_x) == 0)			//读PB11输入寄存器的状态，如果为0，则代表按键2按下
+	else if (GPIO_ReadInputDataBit(KEY2_GPIOx, KEY2_GPIO_Pin_x) == 0)			//读PB11输入寄存器的状态，如果为0，则代表按键2按下
 	{
 		return 2;												//置键码为2
 	}
-	
-    if (GPIO_ReadInputDataBit(KEY3_GPIOx, KEY3_GPIO_Pin_x) == 0)			//读PB11输入寄存器的状态，如果为0，则代表按键2按下
+	else if (GPIO_ReadInputDataBit(KEY3_GPIOx, KEY3_GPIO_Pin_x) == 0 && press_time >= 1000)//与return 3顺序不可颠倒哦
+    {
+        return 4;
+    }
+    else if (GPIO_ReadInputDataBit(KEY3_GPIOx, KEY3_GPIO_Pin_x) == 0)			//读PB11输入寄存器的状态，如果为0，则代表按键2按下
 	{
 		return 3;												//置键码为3
 	}

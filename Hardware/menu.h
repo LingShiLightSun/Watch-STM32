@@ -8,6 +8,7 @@ extern uint8_t menu_KeyNum;
 #define MENU_CHOOSE_NUM 7
 #define PI              3.1415926
 
+void Show_Battery(void);
 void menu_ShowClock(void);
 uint8_t menu_FirstPage_Choose(void);
 void menu_ShowSetting(void);

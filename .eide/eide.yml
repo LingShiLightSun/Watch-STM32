@@ -98,6 +98,10 @@ virtualFolder:
         - path: Hardware/MyI2C.h
         - path: Hardware/dino.c
         - path: Hardware/dino.h
+        - path: Hardware/AD.c
+        - path: Hardware/AD.h
+        - path: Hardware/Battery.c
+        - path: Hardware/Battery.h
       folders: []
     - name: User
       files:
